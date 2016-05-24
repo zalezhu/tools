@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+      http://www.springframework.org/schema/tx 
+      http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-4.2.xsd ">
+	<bean id="props"
+			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	        <property name="ignoreUnresolvablePlaceholders" value="true" />
+	        <property name="ignoreResourceNotFound" value="true" />
+	        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+			<property name="locations">
+				<list>
+					<value>classpath:split.properties</value>
+					<value>file:./split.properties</value>
+				</list>
+			</property>
+		</bean>
+	<context:component-scan base-package="cn.com.cardinfo" />
+
+	<!-- <bean id="jndiDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:ibs/db/ora1"></property>
+	</bean> -->
+	<!-- dataSource -->
+	<bean id="dataSourceTomcat" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+        <property name="poolProperties">
+            <bean class="org.apache.tomcat.jdbc.pool.PoolProperties">
+                <property name="url" value="${jdbc.url}"/>
+                <property name="driverClassName" value="${jdbc.driverClassName}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+                <property name="jmxEnabled" value="true"/><!-- 注册池JMX。的默认值是true。-->
+                <property name="testWhileIdle" value="true"/> <!--默认值是false,当连接池中的空闲连接是否有效 -->
+                <property name="testOnBorrow" value="true"/><!-- 默认值是true，当从连接池取连接时，验证这个连接是否有效-->
+                <property name="validationInterval" value="30000"/><!--检查连接死活的时间间隔（单位：毫妙） 0以下的话不检查。默认是0。 -->
+                <property name="testOnReturn" value="true"/> <!--默认值是flase,当从把该连接放回到连接池的时，验证这个连接是 -->
+                <property name="validationQuery" value="select 1"/><!--一条sql语句，用来验证数据库连接是否正常。这条语句必须是一个查询模式，并至少返回一条数据。可以为任何可以验证数据库连接是否正常的sql-->
+                <property name="timeBetweenEvictionRunsMillis" value="30000"/> <!-- #运行判断连接超时任务的时间间隔，单位为毫秒，默认为-1，即不执行任务。 -->
+                <property name="maxActive" value="100"/><!-- 连接池的最大数据库连接数。设为0表示无限制。 -->
+                <property name="initialSize" value="10"/> <!-- 初始化连接数量 -->
+                <property name="maxWait" value="30000"/>  <!-- 最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。 -->
+                <property name="removeAbandonedTimeout" value="60"/><!--自我中断时间秒 -->
+                <property name="minEvictableIdleTimeMillis" value="30000"/><!--连接的超时时间，默认为半小时。-->
+                <property name="minIdle" value="10"/> <!-- 最小等待连接中的数量,设 0 为没有限制 -->
+                <property name="logAbandoned" value="true"/><!--是否记录中断事件， 默认为 false-->
+                <property name="removeAbandoned" value="true"/> <!-- 是否自动回收超时连接-->
+                <!-- 跟踪自动提交，只读目录和事务隔离级别 -->
+                <!-- 跟踪打开的语句，并关闭连接时返回到池中 -->
+                <property name="jdbcInterceptors" value="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"/>
+            </bean>
+        </property>
+    </bean>
+
+	<!-- session -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceTomcat" />
+		<property name="configLocation" value="classpath:mybatis-configuration.xml" />
+		<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+		<property name="typeAliasesPackage" value="cn.com.cardinfo.model.db"></property>
+	</bean>
+
+	<!-- mapper scan -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.com.cardinfo.repo" />
+	</bean>
+
+	<!-- transaction -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceTomcat">
+		</property>
+	</bean>
+
+	<!-- 启用注解事务控制 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+</beans>
