@@ -3,11 +3,7 @@ package cn.com.cardinfo.splittools.utils;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -26,12 +22,8 @@ public class ConfigProperties {
 	private static String propertiesPath = "./split.properties";
 	private static Map<String,Byte> merIds = new HashMap<String,Byte>();
 	private ConfigProperties(){
-		ApplicationContext  context = new ClassPathXmlApplicationContext("classpath:spring-mybatis.xml");
-		UrmMinfRepo repo = context.getBean(UrmMinfRepo.class);
-		List<String> ids = repo.findAllMerId();
-		for(String id:ids){
-			merIds.put(id, (byte)1);
-		}
+		initProperties();
+		initMerchants();
 		
 	}
 	public static boolean isMerExist(String id){
@@ -41,10 +33,18 @@ public class ConfigProperties {
 		synchronized (ConfigProperties.class) {
 			if(configProperties==null){
 				configProperties=new ConfigProperties();
-				initProperties();
 			}
 		}
 		return configProperties;
+	}
+	private  void initMerchants(){
+		String merchantStr = properties.getProperty("merchant.no");
+		ApplicationContext  context = new ClassPathXmlApplicationContext("classpath:spring-mybatis.xml");
+		UrmMinfRepo repo = context.getBean(UrmMinfRepo.class);
+		List<String> ids = repo.findAllMerId(Arrays.asList(merchantStr.split(",")));
+		for(String id:ids){
+			merIds.put(id, (byte)1);
+		}
 	}
 	
 	public String getConfig(String key){
@@ -72,7 +72,7 @@ public class ConfigProperties {
 		return resultConfigMap;
 	}
 	
-	private static void initProperties(){
+	private  void initProperties(){
 		properties=new Properties();
 
 		InputStream inputStream=null;

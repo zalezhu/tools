@@ -8,14 +8,10 @@
       select merc_id
       from t_urm_minf b
       where org_in_no = '00000002'
-      and b.merc_id not in ( '801310058120062',
-                             '801310058140019',
-                             '801310073920020',
-                             '801310058140024',
-                             '801310058140016',
-                             '801310073720007',
-                             '801310058140023',
-                             '801310054510003',
-                             '801310058140022')
+      and b.merc_id not in
+       <foreach item="item" index="index" collection="merchantNos"
+                open="(" separator="," close=")">
+           #{item}
+       </foreach>
     </select>
 </mapper>

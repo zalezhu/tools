@@ -1,0 +1,29 @@
+spring:
+#环境 dev product
+  profiles:
+    active: dev
+#端口
+server:
+  port: 8080
+#mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: cn.com.cardinfo.monitor.entity
+  config-location: classpath:mybatis-configuration.xml
+datasource:
+  mysql:
+    url: jdbc:mysql://172.19.100.162:3306/monitor?characterEncoding=utf8&autoReconnect=true
+    username: monitor
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+    initialSize: 10
+    maxActive: 200
+    minIdle: 10
+    maxWait: 30000
+    validationQuery: select 1
+    testOnBorrow: true
+    testOnReturn: true
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 30000
+logging:
+  file: log/shortlink.log
