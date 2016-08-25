@@ -1,0 +1,15 @@
+.input-select{
+    padding: 0px;
+}
+
+.input-select-list{
+    border: 1px solid #817F82;
+}
+.input-select-list li{
+    cursor: default;
+    list-style: none outside none;
+    margin: 0;
+}
+.input-select-list li.selected{
+    background: none repeat scroll 0 0 #EBEBEB;
+}
