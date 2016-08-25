@@ -1,6 +1,6 @@
 define(['jquery','loginService','amplify','gritter'],function($,loginService){
     return {
-        AbstractViewModel: class AbstractViewModel { 
+        AbstractViewModel: class AbstractViewModel {  
            constructor() {
                this.screenCheck = $.fullscreen.isNativelySupported();
            };
