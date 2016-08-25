@@ -11,6 +11,14 @@
 
     <groupId>com.zale.shortlink.entity</groupId>
     <artifactId>db-entity</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>1.9.2.RELEASE</version>
 
+        </dependency>
+
+    </dependencies>
 
 </project>

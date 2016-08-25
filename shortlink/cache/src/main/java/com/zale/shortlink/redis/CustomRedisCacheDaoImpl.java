@@ -16,12 +16,15 @@ import java.util.List;
 import java.util.Set;
 
 @Component("redisCache")
-public class CustomRedisCacheDaoImpl<T> implements RedisCacheDao<T>{
-	@Autowired
+public class CustomRedisCacheDaoImpl implements RedisCacheDao{
 	private RedisTemplate<Serializable, Serializable> redisTemplate;
 	private RedisSerializer defaultSerializer;
+	@Autowired
+	public CustomRedisCacheDaoImpl(RedisTemplate redisTemplate) {
+		this.redisTemplate = redisTemplate;
+	}
 
-public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
+	public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 		return redisTemplate;
 	}
 
@@ -36,7 +39,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 	
 	@Override
-	public void save(final String key, final T obj, final Long expires) {
+	public <T> void  save(final String key, final T obj, final Long expires) {
 		redisTemplate.execute(new RedisCallback<Object>() {
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -52,11 +55,11 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void save(final String key, final T obj) {
+	public <T>  void save(final String key, final T obj) {
 		this.save(key, obj, null);
 	}
 
-	public T read(final String key) {
+	public <T>  T read(final String key) {
 		return redisTemplate.execute(new RedisCallback<T>() {
 			@Override
 			public T doInRedis(RedisConnection connection)
@@ -83,12 +86,12 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void pushSetItem(final String key, final T obj) {
+	public <T>  void pushSetItem(final String key, final T obj) {
 		this.pushSetItem(key, obj, null);
 	}
 
 	@Override
-	public void pushSetItem(final String key, final T obj, final Long expires) {
+	public <T>  void pushSetItem(final String key, final T obj, final Long expires) {
 		redisTemplate.execute(new RedisCallback<Object>(){
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -108,7 +111,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void removeSetItem(final String key, final T obj) {
+	public <T>  void removeSetItem(final String key, final T obj) {
 		redisTemplate.execute(new RedisCallback<Object>(){
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -123,7 +126,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 		});
 	}
 
-	public Set<T> readSet(final String key) {
+	public <T>  Set<T> readSet(final String key) {
 		return redisTemplate.execute(new RedisCallback<Set<T>>() {
 			@Override
 			public Set<T> doInRedis(RedisConnection connection)
@@ -143,27 +146,27 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public T read(String key, Type type) {
+	public <T>  T read(String key, Class<T> type) {
 		return this.read(key);
 	}
 
 	@Override
-	public void delete(String key, Type type) {
+	public <T>  void delete(String key, Class<T> type) {
 		this.delete(key);
 	}
 
 	@Override
-	public Set<T> readSet(String key, Type type) {
+	public <T>  Set<T> readSet(String key, Class<T> type) {
 		return this.readSet(key);
 	}
 	
 	@Override
-	public void pushLisItem(final String key, final T obj) {
+	public <T>  void pushLisItem(final String key, final T obj) {
 		this.pushListItem(key, obj, null);
 	}
 
 	@Override
-	public void pushListItem(final String key, final T obj, final Long expires) {
+	public <T>  void pushListItem(final String key, final T obj, final Long expires) {
 		redisTemplate.execute(new RedisCallback<Object>(){
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -181,7 +184,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void removeListItem(final String key, final T obj) {
+	public <T>  void removeListItem(final String key, final T obj) {
 		redisTemplate.execute(new RedisCallback<Object>(){
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -194,7 +197,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 		});
 	}
 	@Override
-	public List<T> readList(final String key,final Type type) {
+	public <T>  List<T> readList(final String key,final Class<T> type) {
 		return redisTemplate.execute(new RedisCallback<List<T>>() {
 			@Override
 			public List<T> doInRedis(RedisConnection connection)
@@ -210,7 +213,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public Long incr(final String key,final Type type) {
+	public <T>  Long incr(final String key,final Class<T> type) {
 		return redisTemplate.execute(new RedisCallback<Long>() {
 			@Override
 			public Long doInRedis(RedisConnection connection)
@@ -222,7 +225,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public Long incrBy(final String key, final Long integer,final Type type) {
+	public <T>  Long incrBy(final String key, final Long integer,final Class<T> type) {
 		return redisTemplate.execute(new RedisCallback<Long>() {
 			@Override
 			public Long doInRedis(RedisConnection connection)

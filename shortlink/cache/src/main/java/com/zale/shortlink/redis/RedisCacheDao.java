@@ -11,46 +11,46 @@ import java.util.Set;
  * 
  * @param <T>
  */
-public interface RedisCacheDao<T> {
-	public void save(final String key, final T obj);
+public interface RedisCacheDao {
+	public  <T> void save(final String key, final T obj);
 	/**
 	 * 
 	 * @param key 
 	 * @param obj
 	 * @param expires 单位秒
 	 */
-	public void save(final String key, final T obj, Long expires);
+	public <T> void save(final String key, final T obj, Long expires);
 
-	public void pushSetItem(final String key, final T obj);
+	public <T> void pushSetItem(final String key, final T obj);
 	/**
 	 * 保存到列表
 	 * @param key
 	 * @param obj
 	 * @param expires 单位秒
 	 */
-	public void pushSetItem(final String key, final T obj, Long expires);
+	public <T> void pushSetItem(final String key, final T obj, Long expires);
 
-	public void removeSetItem(final String key, final T obj);
+	public <T> void removeSetItem(final String key, final T obj);
 
-	T read(String key, Type type);
-	void delete(String key, Type type);
-	Set<T> readSet(String key, Type type);
-	void pushLisItem(String key, T obj);
-	void pushListItem(String key, T obj, Long expires);
-	void removeListItem(String key, T obj);
-	List<T> readList(String key, Type type);
+	<T> T read(String key, Class<T> type);
+	<T> void delete(String key, Class<T> type);
+	<T> Set<T> readSet(String key, Class<T> type);
+	<T> void pushLisItem(String key, T obj);
+	<T> void pushListItem(String key, T obj, Long expires);
+	<T> void removeListItem(String key, T obj);
+	<T> List<T> readList(String key, Class<T> type);
 	
 	/**
 	 * 
 	 * @param key
 	 * @return
 	 */
-	Long incr(final String key, final Type type);
+	<T> Long incr(final String key, final Class<T> type);
 	
 	/**
 	 * @param key
 	 * @param integer
 	 * @return
 	 */
-	Long incrBy(final String key, final Long integer, final Type type);
+	<T> Long incrBy(final String key, final Long integer, final Class<T> type);
 }

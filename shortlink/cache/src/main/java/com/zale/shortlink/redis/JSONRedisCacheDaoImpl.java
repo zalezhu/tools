@@ -15,10 +15,13 @@ import java.util.List;
 import java.util.Set;
 
 @Component("JSONRedisCache")
-public class JSONRedisCacheDaoImpl<T> implements RedisCacheDao<T>{
-	@Autowired
+public class JSONRedisCacheDaoImpl implements RedisCacheDao{
+//	@Autowired
 	private RedisTemplate<Serializable, Serializable> redisTemplate;
-
+	@Autowired
+	public JSONRedisCacheDaoImpl(RedisTemplate redisTemplate) {
+		this.redisTemplate = redisTemplate;
+	}
 public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 		return redisTemplate;
 	}
@@ -31,7 +34,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 
 	
 	@Override
-	public void save(final String key, final T obj, final Long expires) {
+	public <T>  void save(final String key, final T obj, final Long expires) {
 		redisTemplate.execute(new RedisCallback<Object>() {
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -48,12 +51,12 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void save(final String key, final T obj) {
+	public <T>  void save(final String key, final T obj) {
 		this.save(key, obj, null);
 	}
 
 	@Override
-	public T read(final String key,final Type type) {
+	public <T> T read(final String key,final Class<T> type) {
 		return redisTemplate.execute(new RedisCallback<T>() {
 			@Override
 			public T doInRedis(RedisConnection connection)
@@ -69,7 +72,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void delete(final String key,final Type type) {
+	public <T> void delete(final String key,final Class<T> type) {
 		redisTemplate.execute(new RedisCallback<Object>() {
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -83,12 +86,12 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void pushSetItem(final String key, final T obj) {
+	public <T> void pushSetItem(final String key, final T obj) {
 		this.pushSetItem(key, obj, null);
 	}
 
 	@Override
-	public void pushSetItem(final String key, final T obj, final Long expires) {
+	public <T> void pushSetItem(final String key, final T obj, final Long expires) {
 		redisTemplate.execute(new RedisCallback<Object>(){
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -108,7 +111,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 		
 	}
 	@Override
-	public Set<T> readSet(final String key,final Type type) {
+	public <T> Set<T> readSet(final String key,final Class<T> type) {
 		return redisTemplate.execute(new RedisCallback<Set<T>>() {
 			@Override
 			public Set<T> doInRedis(RedisConnection connection)
@@ -128,7 +131,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 		});
 	}
 	@Override
-	public void removeSetItem(final String key, final T obj) {
+	public <T> void removeSetItem(final String key, final T obj) {
 		redisTemplate.execute(new RedisCallback<Object>(){
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -145,12 +148,12 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void pushLisItem(final String key, final T obj) {
+	public <T> void pushLisItem(final String key, final T obj) {
 		this.pushListItem(key, obj, null);
 	}
 
 	@Override
-	public void pushListItem(final String key, final T obj, final Long expires) {
+	public <T> void pushListItem(final String key, final T obj, final Long expires) {
 		redisTemplate.execute(new RedisCallback<Object>(){
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -169,7 +172,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public void removeListItem(final String key, final T obj) {
+	public <T> void removeListItem(final String key, final T obj) {
 		redisTemplate.execute(new RedisCallback<Object>(){
 			@Override
 			public Object doInRedis(RedisConnection connection)
@@ -183,7 +186,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 		});
 	}
 	@Override
-	public List<T> readList(final String key,final Type type) {
+	public <T> List<T> readList(final String key,final Class<T> type) {
 		return redisTemplate.execute(new RedisCallback<List<T>>() {
 			@Override
 			public List<T> doInRedis(RedisConnection connection)
@@ -200,7 +203,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public Long incr(final String key,final Type type) {
+	public <T> Long incr(final String key,final Class<T> type) {
 		return redisTemplate.execute(new RedisCallback<Long>() {
 			public Long doInRedis(RedisConnection connection)
 					throws DataAccessException {
@@ -212,7 +215,7 @@ public RedisTemplate<Serializable, Serializable> getRedisTemplate() {
 	}
 
 	@Override
-	public Long incrBy(final String key, final Long integer,final Type type) {
+	public <T> Long incrBy(final String key, final Long integer,final Class<T> type) {
 		return redisTemplate.execute(new RedisCallback<Long>() {
 			public Long doInRedis(RedisConnection connection)
 					throws DataAccessException {
