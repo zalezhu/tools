@@ -1,0 +1,12 @@
+spring:
+#环境 dev product
+  profiles:
+    active: dev
+  redis:
+    host: 172.19.100.174
+    port: 45001
+#端口
+server:
+  port: 8081
+logging:
+  file: log/shortlink_dmz.log

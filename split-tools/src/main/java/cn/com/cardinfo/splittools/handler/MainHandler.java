@@ -34,8 +34,9 @@ public class MainHandler implements Handler {
 		}
 		File dir = new File(fileLoc);
 		FileHandlerDispatch dispatch = new FileHandlerDispatch();
-		int count = 0;
+		int count = -1;
 		for(final String fileRegex:fileNameArray){
+			count++;
 			File[] files = dir.listFiles(new FilenameFilter() {
 				
 				@Override
@@ -47,7 +48,7 @@ public class MainHandler implements Handler {
 				}
 			});
 			if(files.length==0){
-				logger.error("文件不存在，或者文件正则表达示有误");
+				logger.info("文件不存在，或者文件正则表达示有误");
 				continue;
 			}
 //			if(files.length>1){
@@ -64,7 +65,6 @@ public class MainHandler implements Handler {
 					lenArray[i] = Integer.parseInt(lenArraytmp[i].trim());
 				}
 			}
-			count++;
 			for(File waitFile:files){
 				AbstractFileHandler fileHandler = dispatch.dispatch(fileRegex,index , lenArray, waitFile,fileNewLoc,fileOldLoc);
 				fileHandler.handle();
