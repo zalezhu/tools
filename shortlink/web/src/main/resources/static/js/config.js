@@ -333,7 +333,7 @@ SL.DPGlobal = {
             format = 'yyyy-MM-dd hh:mm:ss';
         if (typeof date === 'string' || typeof date === 'number')
             date = new Date(date);
-        var year = date.getFullYear()
+        var year = date.getFullYear();
         var month = date.getMonth() + 1;
         var days = date.getDate();
         var hours = date.getHours();

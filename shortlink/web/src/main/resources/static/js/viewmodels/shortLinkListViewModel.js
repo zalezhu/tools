@@ -7,7 +7,7 @@ requirejs(['jquery','knockout','shortLinkService','commonUtil','abstract','DT-bo
             this.createDate = ko.observable('');
             this.expireDate = ko.observable('');
         }
-    };
+    }
     class SLAddForm{
         constructor(){
             this.llink = ko.observable('');
@@ -69,7 +69,7 @@ requirejs(['jquery','knockout','shortLinkService','commonUtil','abstract','DT-bo
                     'sDefaultContent': '',
                     'fnRender': function (obj) {
                         let link= SL.shortDomain+obj.aData.slink;
-                        let html = '<a href="'+link+'">'+link+'</a>'
+                        let html = '<a href="'+link+'">'+link+'</a>';
                         return html;
                     }
                 },

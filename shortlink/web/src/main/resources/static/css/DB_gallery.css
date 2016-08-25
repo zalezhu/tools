@@ -1,0 +1,21 @@
+﻿@charset "utf-8";
+*{margin:0;padding:0;list-style-type:none;}
+a,img{border:0;a:hover {background-color:#FF704D;}}
+body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
+
+/* DB_gallery */
+#DB_gallery{width:100%;min-width: 580px;margin:40px auto 0 auto;}
+#DB_gallery .DB_imgSet {position:relative;height:387px;overflow:hidden;}
+#DB_gallery .DB_imgSet .DB_imgWin{height:100%}
+#DB_gallery .DB_imgSet .DB_page{position:absolute;bottom:0;font:11px tahoma bold;padding:5px;color:#ffffff}
+#DB_gallery .DB_imgSet .DB_page .DB_current{color:#ffff00}
+#DB_gallery .DB_imgSet .DB_page .DB_total{color:#ffcc00}
+#DB_gallery .DB_imgSet .DB_prevBtn{position:absolute;top:50%;margin-top:-45px;cursor:pointer;left:0;}
+#DB_gallery .DB_imgSet .DB_nextBtn{position:absolute;top:50%;margin-top:-45px;cursor:pointer;right:0;}
+
+#DB_gallery .DB_thumSet {position:relative;margin-top:10px;width:100%;overflow:hidden}
+#DB_gallery .DB_thumSet .DB_thumMove{position:relative;white-space:nowrap;font-size:0;a:hover {background-color:#FF704D;}}
+#DB_gallery .DB_thumSet .DB_thumMove li{display:inline;margin-right:5px;a:hover {background-color:#FF704D;}}
+#DB_gallery .DB_thumSet .DB_prevPageBtn{position:absolute;top:0;cursor:pointer;left:0;}
+#DB_gallery .DB_thumSet .DB_nextPageBtn{position:absolute;top:0;cursor:pointer;right:0;}
+#DB_gallery .DB_thumSet .DB_thumLine{a:hover {color:#FF704D;}}
