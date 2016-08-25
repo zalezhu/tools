@@ -24,7 +24,7 @@
         <logger name="org.springframework.web" level="DEBUG" />
         <logger name="org.springframework.data" level="DEBUG" />
         <logger name="org.mybatis" level="DEBUG" />
-        <logger name="cn.com.cardinfo.monitor" level="TRACE"/>
+        <logger name="com.zale.shortlink" level="TRACE"/>
         <logger name="com.alibaba.dubbo" level="DEBUG"/>
     </springProfile>
 
