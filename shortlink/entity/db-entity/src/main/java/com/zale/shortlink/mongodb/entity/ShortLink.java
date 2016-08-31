@@ -1,6 +1,7 @@
 package com.zale.shortlink.mongodb.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 public class ShortLink {
     @Id
     private String slink;
+    @Indexed(unique = true)
     private String llink;
     private Date createDate;
     private Date expireDate;

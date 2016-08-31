@@ -1,4 +1,4 @@
-requirejs(['jquery','knockout','shortLinkService','commonUtil','abstract','DT-bootstrap','dialog','bootstrap','utility'],function($,ko,shortLinkService,util,abstract) {
+requirejs(['jquery', 'knockout', 'shortLinkService', 'commonUtil', 'abstract', 'jquery-datatable', 'dialog', 'bootstrap', 'utility'], function ($, ko, shortLinkService, util, abstract) {
 
     class SLSearchForm{
         constructor(){
@@ -74,6 +74,7 @@ requirejs(['jquery','knockout','shortLinkService','commonUtil','abstract','DT-bo
                     }
                 },
                 {   'sDefaultContent': '', //长裢
+                    'sClass': 'wordbreak',
                     'fnRender': function (obj) {
                         return obj.aData.llink;
                     }

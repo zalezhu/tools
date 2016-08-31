@@ -10,6 +10,8 @@ import java.util.Date;
 public interface ShortLinkResource {
     RespEntity createShortLink(String url, Long expireDate);
 
+    RespEntity createShortLinkSpecial(String code, String params);
+
     RespEntity removeShortLink(String surl);
 
     RespEntity getLLink(String surl);

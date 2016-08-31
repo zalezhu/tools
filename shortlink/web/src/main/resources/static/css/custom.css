@@ -189,3 +189,8 @@
 table.display tr.even.gradeX, table.display tr.gradeX, tr.even.gradeU td.sorting_1, tr.even td.sorting_1, table.display tr.even.gradeC, table.display tr.gradeC, tr.odd.gradeC td.sorting_1, table.display tr.even.gradeU, table.display tr.gradeU, tr.odd.gradeU td.sorting_1 {
     background: none !important;
 }
+
+.wordbreak {
+    word-wrap: break-word;
+    word-break: break-all;
+}

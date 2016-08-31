@@ -7,13 +7,16 @@ requirejs(
             this.userName = ko.observable('');
             this.password = ko.observable('');
             this.logging = ko.observable(false);
+            this.backSrc = ko.observable('');
             this.error=ko.observable('');
             this.init();
             
         }
         init() {
+            this.initBackground();
             this.initValidator();
         };
+
 
         login() {
             if($(".form-signin").valid()) {
@@ -65,6 +68,12 @@ requirejs(
             });
 
         };
+
+        initBackground() {
+            let rno = Math.round(Math.random() * 100) % 25;
+            console.log(rno);
+            this.backSrc('/images/login/back/' + rno + '.jpg');
+        }
     }
         let loginViewModel = new LoginViewModel();
     ko.applyBindings(loginViewModel);

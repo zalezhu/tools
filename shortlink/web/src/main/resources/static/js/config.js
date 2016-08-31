@@ -3,7 +3,7 @@
  */
 const SL = {
     serverName: "",
-    shortDomain:"http://intellij.cardinfo.com.cn/"
+    shortDomain: "http://222.240.1.16:5099/"
 };
 
 requirejs.config({
@@ -104,9 +104,9 @@ requirejs.config({
             , exports: 'amplify'
         },
         'gritter': ['jquery'],
-        'jquery-datatable': ['jquery'],
+        // 'jquery-datatable': ['jquery'],
         // 'jquery-form': ['jquery'],
-        'DT-bootstrap': ['jquery', 'jquery-datatable'],
+        // 'DT-bootstrap': ['jquery', 'jquery-datatable'],
         // 'ajaxfileupload': ['jquery'],
         'bootstrap': ['jquery']
         // 'bootstrap2': ['jquery'],

@@ -4,9 +4,13 @@ spring:
     active: dev
   redis:
     host: 172.19.100.174
+#    host: 172.19.100.150
     port: 45001
 #端口
 server:
   port: 8080
 logging:
   file: log/shortlink.log
+zookeeper:
+    address: 172.19.100.181:2181,172.19.100.182:2181,172.19.100.183:2181
+    #address: 172.19.100.141:2181,172.19.100.144:2181,172.19.100.145:2181

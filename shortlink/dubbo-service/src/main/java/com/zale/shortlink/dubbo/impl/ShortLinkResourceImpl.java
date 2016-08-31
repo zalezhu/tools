@@ -1,5 +1,8 @@
 package com.zale.shortlink.dubbo.impl;
 
+import cn.com.cardinfo.sdk.entity.RequestEntity;
+import cn.com.cardinfo.sdk.util.OpenApiUtil;
+import com.alibaba.dubbo.common.json.JSON;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.cardsmart.inf.entity.RespEntity;
 import com.zale.shortlink.dubbo.ShortLinkResource;
@@ -16,6 +19,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,7 +28,9 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Zale on 16/8/22.
@@ -42,6 +48,8 @@ public class ShortLinkResourceImpl implements ShortLinkResource {
     private RedisCacheDao redisCache;
     @Value("${short.domain}")
     private String shortDomain;
+    @Value("${openapi.domain}")
+    private String openapiDomain;
 
     @Override
     public RespEntity createShortLink(String url, Long expireDate) {
@@ -50,16 +58,42 @@ public class ShortLinkResourceImpl implements ShortLinkResource {
                 throw new ParamValueException("长裢不能为空");
             }
             ShortLink sl = new ShortLink();
-            ShortSeq seq = mongoTemplate
-                    .findAndModify(new Query(Criteria.where("seq").ne(null)), new Update().inc("seq", 1), ShortSeq.class);
-            sl.setSlink(SystemUtil.DecimalToSystem64(seq.getSeq()));
             sl.setLlink(url);
-            DateTime now = new DateTime();
-            sl.setCreateDate(now.toDate());
-            sl.setExpireDate(expireDate == null ? now.plusYears(50).toDate() : new Date(expireDate));
-            shortLinkMongoRepo.save(sl);
-            redisCache.save(sl.getSlink(), sl.getLlink());
-            return new RespEntity("0000", "创建成功", shortDomain+sl.getSlink());
+            Example<ShortLink> example = Example.of(sl);
+            ShortLink rst = shortLinkMongoRepo.findOne(example);
+            if (rst == null) {
+                ShortSeq seq = mongoTemplate
+                        .findAndModify(new Query(Criteria.where("seq").ne(null)), new Update().inc("seq", 1), ShortSeq.class);
+                sl.setSlink(SystemUtil.DecimalToSystem64(seq.getSeq()));
+                DateTime now = new DateTime();
+                sl.setCreateDate(now.toDate());
+                sl.setExpireDate(expireDate == null ? now.plusYears(50).toDate() : new Date(expireDate));
+                shortLinkMongoRepo.save(sl);
+                redisCache.save(sl.getSlink(), sl.getLlink());
+                rst = sl;
+            }
+            return new RespEntity("0000", "创建成功", shortDomain + rst.getSlink());
+        } catch (Exception e) {
+            return new RespEntity("9999", e.getMessage());
+        }
+    }
+
+
+    @Override
+    public RespEntity createShortLinkSpecial(String code, String params) {
+        try {
+            if (StringUtils.isEmpty(params)) {
+                throw new ParamValueException("参数不能为空");
+            }
+            if (StringUtils.isEmpty(code)) {
+                throw new ParamValueException("服务编码不能为空");
+            }
+            Map paramMap = JSON.parse(params, HashMap.class);
+            RequestEntity entity = new RequestEntity("SMF007", "1.0", "kayou", "short_link", "02f5315f8d8241c6ade55add8608a80a",
+                    paramMap);
+            entity.setTimestamp(null);
+            String llink = OpenApiUtil.genOpenAPiGetUrl(entity, openapiDomain, "74f1c98e74e744ddb809b4931089e663");
+            return createShortLink(llink, null);
         } catch (Exception e) {
             return new RespEntity("9999", e.getMessage());
         }
@@ -109,9 +143,12 @@ public class ShortLinkResourceImpl implements ShortLinkResource {
 
     @Override
     public RespEntity initShortSeq() {
-        ShortSeq seq = new ShortSeq();
-        seq.setSeq(0L);
-        mongoTemplate.save(seq);
+        List<ShortSeq> dbseq = mongoTemplate.findAll(ShortSeq.class);
+        if (dbseq == null || dbseq.isEmpty()) {
+            ShortSeq seq = new ShortSeq();
+            seq.setSeq(0L);
+            mongoTemplate.save(seq);
+        }
         return new RespEntity("0000", "初始化成功");
     }
 

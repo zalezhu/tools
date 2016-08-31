@@ -10,3 +10,5 @@ server:
   port: 8081
 logging:
   file: log/shortlink_dmz.log
+zookeeper:
+  address: 172.19.100.181:2181,172.19.100.182:2181,172.19.100.183:2181

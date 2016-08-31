@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @SpringBootApplication(excludeName = { "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration","org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration"})
 @EnableScheduling
-@ComponentScan("com.zale.shortlink")
-@ImportResource("classpath:dubboContext.xml")
+@ComponentScan({ "com.zale.shortlink", "com.cardsmart.esbsdk" })
+//@ImportResource("classpath:dubboContext.xml")
 public class WebApplication {
     public static void main(String[] args) {
 
