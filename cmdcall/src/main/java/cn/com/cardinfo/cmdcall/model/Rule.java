@@ -7,5 +7,5 @@ import java.util.Date;
  */
 public interface  Rule {
 
-    Date nextExeTime();
+    Date nextExeTime(Date lastRunTime);
 }

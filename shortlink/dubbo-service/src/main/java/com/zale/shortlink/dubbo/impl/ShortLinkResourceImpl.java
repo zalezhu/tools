@@ -111,6 +111,9 @@ public class ShortLinkResourceImpl implements ShortLinkResource {
             String llink = null;
             ShortLink sl = shortLinkMongoRepo.findOne(surl);
             if (sl != null) {
+                if (sl.getExpireDate().before(new Date())) {
+                    throw new RuntimeException("连接已经过期");
+                }
                 llink = sl.getLlink();
                 redisCache.save(surl, llink, 60 * 60L);
             }

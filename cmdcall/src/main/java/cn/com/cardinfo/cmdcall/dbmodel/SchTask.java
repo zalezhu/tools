@@ -3,6 +3,7 @@ package cn.com.cardinfo.cmdcall.dbmodel;
 import cn.com.cardinfo.cmdcall.command.Command;
 import cn.com.cardinfo.cmdcall.command.CommandGroup;
 import cn.com.cardinfo.cmdcall.model.Rule;
+import com.sun.tools.javac.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -14,11 +15,11 @@ import java.util.Date;
 public class SchTask {
     @Id
     private String id;
+    private String name;
+    private String desc;
     private Date lastExeTime;
     private Date nextExeTime;
-    private Command command;
-    private String lockBy;
-    private int failedTimes;
+    private List<ChildTask> childTasks;
     private int status;
     private Rule rule;
 
@@ -46,20 +47,12 @@ public class SchTask {
         this.nextExeTime = nextExeTime;
     }
 
-    public String getLockBy() {
-        return lockBy;
+    public List<ChildTask> getChildTasks() {
+        return childTasks;
     }
 
-    public void setLockBy(String lockBy) {
-        this.lockBy = lockBy;
-    }
-
-    public int getFailedTimes() {
-        return failedTimes;
-    }
-
-    public void setFailedTimes(int failedTimes) {
-        this.failedTimes = failedTimes;
+    public void setChildTasks(List<ChildTask> childTasks) {
+        this.childTasks = childTasks;
     }
 
     public int getStatus() {
@@ -78,11 +71,19 @@ public class SchTask {
         this.rule = rule;
     }
 
-    public Command getCommand() {
-        return command;
+    public String getName() {
+        return name;
     }
 
-    public void setCommand(Command command) {
-        this.command = command;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

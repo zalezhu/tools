@@ -5,8 +5,6 @@ package cn.com.cardinfo.cmdcall.model;
  */
 public enum RuleType {
     fixed,
-    interval,
-    fixed_limit,
-    interval_limit
+    cron
 
 }

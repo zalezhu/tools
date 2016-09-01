@@ -1,6 +1,7 @@
 package cn.com.cardinfo.cmdcall.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Zale on 16/8/20.
@@ -10,6 +11,9 @@ public class Result<T> implements Serializable{
     private boolean hasError;
     private String error;
     private T obj;
+    private Date startTime;
+    private Date endTime;
+    private String exeBy;
 
     public boolean isHasError() {
         return hasError;
@@ -33,5 +37,29 @@ public class Result<T> implements Serializable{
 
     public void setObj(T obj) {
         this.obj = obj;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getExeBy() {
+        return exeBy;
+    }
+
+    public void setExeBy(String exeBy) {
+        this.exeBy = exeBy;
     }
 }
