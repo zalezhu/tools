@@ -1,0 +1,4 @@
+[
+{id:"49",serverIp:"10.1.11.157",serverPort:20121,clientPort:10121,type:"posp"},
+{id:"1",serverIp:"9.234.4.101",serverPort:8888,type:"union_client"}
+]
